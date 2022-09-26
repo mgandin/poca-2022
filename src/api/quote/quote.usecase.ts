@@ -14,6 +14,10 @@ export class QuoteUsecase {
         return await this.repository.findOneBy({id});
     }
 
+    public async findAll(): Promise<Quote[]> {
+        return await this.repository.find();
+    }
+
     public async create(body: CreateQuoteCommand): Promise<Quote> {
         const quote: Quote = new Quote();
     
