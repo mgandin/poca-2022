@@ -1,5 +1,8 @@
 version: '3.8'
 
+volumes:
+    db-data:
+
 services:
     dev:
         container_name: quote_api_dev
@@ -11,7 +14,6 @@ services:
         command: yarn start:debug
         ports:
             - 3000:3000
-            - 9229:9229
         networks:
             - quote-api-network
         volumes:
@@ -28,13 +30,22 @@ services:
         command: yarn start:prod
         ports:
             - 3000:3000
-            - 9229:9229
         networks:
             - quote-api-network
         volumes:
             - .:/usr/src/app
             - /usr/src/app/node_modules
         restart: unless-stopped
+    db:
+        image: postgres:14.5-alpine
+        ports:
+            - '54334:5432'
+        environment:
+            POSTGRES_USER: test
+            POSTGRES_PASSWORD: test
+            POSTGRES_DB: poca
+        volumes:
+            - db-data:/var/lib/postgresql
 
 networks:
     quote-api-network:
